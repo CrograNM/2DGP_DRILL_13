@@ -206,7 +206,7 @@ class Boy:
         # modify here
         # self.x, self.y = get_canvas_width() / 2, get_canvas_height() / 2
         self.x, self.y = server.background.w / 2, server.background.h / 2  # 물리 좌표계로 변경
-
+        self.ball_count = 0
 
     def update(self):
         # modify here
@@ -233,11 +233,17 @@ class Boy:
         sy = self.y - server.background.window_bottom
         self.image.clip_draw(int(self.frame) * 100, self.action * 100, 100, 100, sx, sy)
         self.font.draw(sx - 100, sy + 60, f'({self.x:5.5}, {self.y:5.5})', (255, 255, 0))
+        self.font.draw(sx - 10, sy + 80, f'{self.ball_count}', (0, 0, 255))
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 20, self.y - 50, self.x + 20, self.y + 50
+        sx = self.x - server.background.window_left
+        sy = self.y - server.background.window_bottom
+        return sx - 20, sy - 50, sx + 20, sy + 50
 
     def handle_collision(self, group, other):
+        if group == 'boy:ball':
+            self.ball_count += 1
         pass
 
 
